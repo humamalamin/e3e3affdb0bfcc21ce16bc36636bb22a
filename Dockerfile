@@ -30,5 +30,7 @@ FROM scratch
 COPY --from=build /app/main /main
 COPY --from=build /app/docs ./docs
 
+EXPOSE 8000
+
 # Set the command to run the Go application
 ENTRYPOINT ["/main"]
