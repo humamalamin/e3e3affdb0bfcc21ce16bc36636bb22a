@@ -36,7 +36,7 @@
 # ENTRYPOINT ["/main"]
 
 # Gunakan base image untuk Go
-FROM golang:1.20 AS builder
+FROM golang:latest AS builder
 
 # Set working directory di dalam container
 WORKDIR /app
