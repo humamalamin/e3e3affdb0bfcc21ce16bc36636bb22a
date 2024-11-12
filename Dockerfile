@@ -10,7 +10,6 @@ RUN go mod download && go mod verify
 COPY . .
 
 COPY --from=build /app/main /main
-
 COPY --from=build /app/docs ./docs
 
 ENTRYPOINT ["/main"]
