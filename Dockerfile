@@ -58,7 +58,7 @@ FROM gcr.io/distroless/base-debian10
 
 # Copy file biner yang sudah di build dari stage builder
 COPY --from=builder /app/main /app/main
-COPY --from=builder /app/docs ./docs
+COPY ./docs /app/docs
 
 COPY .env /app/.env
 
