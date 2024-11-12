@@ -1,0 +1,61 @@
+package validatorLib
+
+import (
+	"errors"
+	"unicode"
+
+	"github.com/go-playground/validator/v10"
+)
+
+var validate *validator.Validate
+
+func init() {
+	validate = validator.New()
+}
+
+func ValidateStruct(s interface{}) error {
+	var errorMessages []string
+	err := validate.Struct(s)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			switch err.Tag() {
+			case "email":
+				errorMessages = append(errorMessages, "Field "+err.Field()+" tidak valid, harap masukkan email yang benar.")
+			case "required":
+				errorMessages = append(errorMessages, "Field "+err.Field()+" wajib diisi.")
+			case "min":
+				if err.Field() == "Password" {
+					errorMessages = append(errorMessages, "Password harus memiliki panjang minimal 8 karakter.")
+				}
+			case "eqfield":
+				errorMessages = append(errorMessages, err.Field()+" harus sama dengan "+err.Param()+".")
+			default:
+				errorMessages = append(errorMessages, "Field "+err.Field()+" tidak valid.")
+			}
+		}
+		return errors.New("Validasi gagal: " + joinMessages(errorMessages))
+	}
+	return nil
+}
+
+func joinMessages(messages []string) string {
+	result := ""
+	for i, message := range messages {
+		if i > 0 {
+			result += ", "
+		}
+		result += message
+	}
+	return result
+}
+
+func StrIsDigit(data string) error {
+	for _, v := range data {
+		isDigit := unicode.IsDigit(v)
+		if !isDigit {
+			return errors.New("string is not digit")
+		}
+	}
+
+	return nil
+}

@@ -1,0 +1,64 @@
+# API PORTAL NEWS APP
+
+## Project Architecture
+
+The project is organized into several directories to keep the codebase modular and maintainable:
+
+- **cmd**:  
+  Contains `main.go`, which serves as the main entry point of the application.
+
+- **internal**:
+  - **adapters**:  
+    Implements adapters for various technologies.
+    - **http**:  
+      Contains handlers and routers for handling HTTP requests.
+    - **database**:  
+      Contains adapters for interacting with the database.
+    - **messaging**:  
+      Contains adapters for sending messages, such as emails.
+  - **core**:  
+    Contains the core business logic of the application.
+    - **domain**:  
+      Defines domain entities and value objects.
+    - **service**:  
+      Implements use cases or application services.
+
+- **config**:  
+  Contains configuration files for the application.
+
+- **lib**:  
+  Contains helper functions or libraries created to facilitate development.
+
+## Database Migration
+
+We use [Go Migrate](https://github.com/golang-migrate/migrate) for managing database migrations. Follow these instructions to create and run migrations:
+
+### Creating a Migration File
+
+To create a new migration file, use the command below. Ensure you use a prefix (`create` or `alter`) at the start of the file name to indicate the type of migration:
+
+```bash
+migrate create -ext sql -dir database/migrations -seq <migration_name>
+```
+
+Replace \`<migration_name>\` with the appropriate name for your migration.
+
+### Running Migrations
+
+To apply migrations, use the following commands:
+
+- **Run Migration Up**: Applies all new migrations:
+
+  ```bash
+  migrate -database ${POSTGRESQL_URL} -path database/migrations up
+  ```
+
+- **Run Migration Down**: Reverts the last applied migration:
+
+  ```bash
+  migrate -database ${POSTGRESQL_URL} -path database/migrations down
+  ```
+
+Ensure the `${POSTGRESQL_URL}` environment variable is set to your PostgreSQL connection string.
+
+---
